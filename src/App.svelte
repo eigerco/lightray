@@ -5,6 +5,10 @@
 		const go = new Go();
 		const wasmModule = await WebAssembly.instantiateStreaming(fetch('main.wasm'), go.importObject);
 		go.run(wasmModule.instance);
+
+		const goCelestia = new Go();
+		const celestiaWasmModule = await WebAssembly.instantiateStreaming(fetch('celestia.wasm'), go.importObject);
+		go.run(celestiaWasmModule.instance);
 	});
 
 </script>
