@@ -1,0 +1,16 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+cmd = "make build"
+bin = "bin/server"
+include_ext = ["go", "html", "css", "js", "wasm"]
+exclude_dir = ["assets", "tmp", "vendor", "public", "node_modules"]
+
+[[watch]]
+name = "Go Client"
+paths = ["go/client"]
+
+[[watch]]
+name = "Go Server"
+paths = ["go/server"]
