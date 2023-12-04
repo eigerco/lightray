@@ -4,8 +4,44 @@
 
     let isConnected = writable(false);
 
-    function connectToNode() {
-        // Assuming goCelestia.Start is exposed to global scope
+	function appendLog(msg, type = 'info') {
+        let wasmLogs = document.getElementById("wasm_logs");
+        
+        // Create a span for the prefix (log level)
+        let prefix = document.createElement('span');
+        let prefixText = type.toUpperCase() + ": ";
+        prefix.textContent = prefixText;
+
+        // Apply color to the prefix based on the log type
+        switch (type) {
+            case 'info':
+                prefix.style.color = 'blue';
+                break;
+            case 'debug':
+                prefix.style.color = 'green';
+                break;
+            case 'error':
+                prefix.style.color = 'red';
+                break;
+            case 'warn':
+                prefix.style.color = 'orange';
+                break;
+            default:
+                prefix.style.color = 'black'; // Default color for prefix
+        }
+
+        // Create a text node for the actual log message
+        let message = document.createTextNode(msg + "\n");
+
+        // Append both the prefix and message to the logs container
+        wasmLogs.appendChild(prefix);
+        wasmLogs.appendChild(message);
+    }
+
+    // Expose appendLog globally
+    window.appendLog = appendLog;
+
+     function connectToNode() {
         if (window.goCelestia && typeof window.goCelestia.Start === 'function') {
             window.goCelestia.Start();
             isConnected.set(true);
@@ -15,19 +51,29 @@
     }
 
     function stopNode() {
-        // Assuming goCelestia.Stop is exposed to global scope
         if (window.goCelestia && typeof window.goCelestia.Stop === 'function') {
             window.goCelestia.Stop();
-            isConnected.set(stop);
+            isConnected.set(false);
         } else {
             console.error('goCelestia.Stop method not available');
         }
     }
 
     onMount(async () => {
-        const goCelestia = new Go();
-        const celestiaWasmModule = await WebAssembly.instantiateStreaming(fetch('celestia.wasm'), goCelestia.importObject);
-        goCelestia.run(celestiaWasmModule.instance);
+        if (!window.Go) {
+            console.error('Go wasm_exec.js is not loaded');
+            return;
+        }
+        const go = new window.Go();
+        let celestiaWasmModule;
+        try {
+            const wasmResponse = await fetch('celestia.wasm');
+            celestiaWasmModule = await WebAssembly.instantiateStreaming(wasmResponse, go.importObject);
+        } catch (err) {
+            console.error('Failed to load celestia.wasm:', err);
+            return;
+        }
+        go.run(celestiaWasmModule.instance);
     });
 </script>
 

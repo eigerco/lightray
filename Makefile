@@ -13,7 +13,7 @@ run-server: build-server
 	./bin/server &
 
 copy-wasm-exec:
-	cp /Users/nevio/.goenv/versions/1.20.10/misc/wasm/wasm_exec.js public/wasm_exec.js
+	cp /Users/nevio/.goenv/versions/1.21.3/misc/wasm/wasm_exec.js public/wasm_exec.js
 
 build-celestia-wasm:
 	@echo "Building celestia wasm"
