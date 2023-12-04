@@ -1,29 +1,27 @@
-<script lang="ts">
-    import { onMount, writable } from 'svelte';
+<script>
+    import { onMount } from 'svelte';
+	import { writable } from 'svelte/store';
 
-    // TypeScript types for better type checking
-    declare const goCelestia: {
-        Start: () => void;
-        Stop: () => void;
-    };
-
-    // Svelte store to keep track of connection state
     let isConnected = writable(false);
 
-    function connectToNode(): void {
-        // Call the Start method in your Go code
-        goCelestia.Start();
-
-        // Update the connection state
-        isConnected.set(true);
+    function connectToNode() {
+        // Assuming goCelestia.Start is exposed to global scope
+        if (window.goCelestia && typeof window.goCelestia.Start === 'function') {
+            window.goCelestia.Start();
+            isConnected.set(true);
+        } else {
+            console.error('goCelestia.Start method not available');
+        }
     }
 
-    function stopNode(): void {
-        // Call the Stop method in your Go code
-        goCelestia.Stop();
-
-        // Update the connection state
-        isConnected.set(false);
+    function stopNode() {
+        // Assuming goCelestia.Stop is exposed to global scope
+        if (window.goCelestia && typeof window.goCelestia.Stop === 'function') {
+            window.goCelestia.Stop();
+            isConnected.set(stop);
+        } else {
+            console.error('goCelestia.Stop method not available');
+        }
     }
 
     onMount(async () => {
@@ -31,6 +29,7 @@
         const wasmModule = await WebAssembly.instantiateStreaming(fetch('main.wasm'), go.importObject);
         go.run(wasmModule.instance);
 
+        const goCelestia = new Go();
         const celestiaWasmModule = await WebAssembly.instantiateStreaming(fetch('celestia.wasm'), go.importObject);
         go.run(celestiaWasmModule.instance);
     });
@@ -63,3 +62,7 @@
         </div>
     </div>
 </main>
+
+<style>
+    /* Add your CSS styles here */
+</style>
