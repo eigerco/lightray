@@ -25,13 +25,9 @@
     }
 
     onMount(async () => {
-        const go = new Go();
-        const wasmModule = await WebAssembly.instantiateStreaming(fetch('main.wasm'), go.importObject);
-        go.run(wasmModule.instance);
-
         const goCelestia = new Go();
-        const celestiaWasmModule = await WebAssembly.instantiateStreaming(fetch('celestia.wasm'), go.importObject);
-        go.run(celestiaWasmModule.instance);
+        const celestiaWasmModule = await WebAssembly.instantiateStreaming(fetch('celestia.wasm'), goCelestia.importObject);
+        goCelestia.run(celestiaWasmModule.instance);
     });
 </script>
 
@@ -52,8 +48,6 @@
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
                         onclick="{connectToNode}">Connect</button>
             {/if}
-            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ml-4 rounded focus:outline-none focus:shadow-outline" 
-                    onclick="testConnectivity()">Test Connectivity</button>
         </div>
 
         <div class="bg-white shadow-md rounded p-6">
