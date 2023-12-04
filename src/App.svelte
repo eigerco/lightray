@@ -42,20 +42,20 @@
     window.appendLog = appendLog;
 
      function connectToNode() {
-        if (window.goCelestia && typeof window.goCelestia.Start === 'function') {
-            window.goCelestia.Start();
+        if (window.startNode && typeof window.startNode === 'function') {
+            window.startNode();
             isConnected.set(true);
         } else {
-            console.error('goCelestia.Start method not available');
+            console.error('startNode method not available');
         }
     }
 
     function stopNode() {
-        if (window.goCelestia && typeof window.goCelestia.Stop === 'function') {
-            window.goCelestia.Stop();
+        if (window.stopNode && typeof window.stopNode === 'function') {
+            window.stopNode();
             isConnected.set(false);
         } else {
-            console.error('goCelestia.Stop method not available');
+            console.error('stopNode method not available');
         }
     }
 
@@ -89,10 +89,10 @@
         <div class="mb-6">
             {#if $isConnected}
                 <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
-                        onclick="{stopNode}">Stop</button>
+                        on:click="{stopNode}">Stop</button>
             {:else}
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
-                        onclick="{connectToNode}">Connect</button>
+                        on:click="{connectToNode}">Connect</button>
             {/if}
         </div>
 
