@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"syscall/js"
 
@@ -13,45 +12,34 @@ import (
 const chatProtocol = "/chat/1.0.0"
 
 func main() {
-	g := js.Global()
-	document := g.Get("document")
-	wasmLogs := document.Call("getElementById", "wasm_logs")
+	appendLog := js.Global().Get("appendLog")
 
-	appendLog := func(msg string, args ...any) {
-		msg = fmt.Sprintf(msg, args...)
-		// Create a new text node with the log message
-		text := document.Call("createTextNode", msg+"\n")
-		// Append the text node to the log element
-		wasmLogs.Call("appendChild", text)
+	// Define a Go function that uses appendLog
+	log := func(msg string, level string) {
+		appendLog.Invoke(msg, level)
 	}
 
 	h, err := libp2p.New()
 	if err != nil {
-		appendLog("Error starting libp2p, check the console !")
+		log(fmt.Sprintf("Failed to start libp2p: %s", err), "error")
 		panic(err)
 	}
 
 	peerID := h.ID()
-	appendLog("Starting up webassembly client...")
-	appendLog("Peer ID: %s", peerID.String())
+	log("Starting up webassembly client...", "info")
+	log(fmt.Sprintf("Peer ID: %s", peerID.String()), "info")
 
 	info, err := peer.AddrInfoFromString("/ip4/94.253.197.203/tcp/47471/p2p/12D3KooWD8f4rGREusTmp3UDPhNGCNMb8EaGfQo6sZ9X8fW98LYc")
 	if err != nil {
-		appendLog("<strong>Error</strong>: %s", err)
+		log(fmt.Sprintf("Failed to get address info: %s", err), "error")
+		panic(err)
 	}
 
 	h.Peerstore().AddAddrs(info.ID, info.Addrs, peerstore.PermanentAddrTTL)
 
 	for _, addr := range info.Addrs {
-		appendLog("Listener Address: %s/p2p/%s", addr, peer.Encode(h.ID()))
+		log(fmt.Sprintf("Listener Address: %s/p2p/%s", addr, peer.Encode(h.ID())), "info")
 	}
-
-	s, err := h.NewStream(context.Background(), info.ID, chatProtocol)
-	if err != nil {
-		appendLog("<strong>Stream Error</strong>: %s", err)
-	}
-
-	_ = s
 
 	select {}
 }

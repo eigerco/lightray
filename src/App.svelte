@@ -1,20 +1,43 @@
-<script>
-	import { onMount } from 'svelte';
+<script lang="ts">
+    import { onMount, writable } from 'svelte';
 
-	onMount(async () => {
-		const go = new Go();
-		const wasmModule = await WebAssembly.instantiateStreaming(fetch('main.wasm'), go.importObject);
-		go.run(wasmModule.instance);
+    // TypeScript types for better type checking
+    declare const goCelestia: {
+        Start: () => void;
+        Stop: () => void;
+    };
 
-		const goCelestia = new Go();
-		const celestiaWasmModule = await WebAssembly.instantiateStreaming(fetch('celestia.wasm'), go.importObject);
-		go.run(celestiaWasmModule.instance);
-	});
+    // Svelte store to keep track of connection state
+    let isConnected = writable(false);
 
+    function connectToNode(): void {
+        // Call the Start method in your Go code
+        goCelestia.Start();
+
+        // Update the connection state
+        isConnected.set(true);
+    }
+
+    function stopNode(): void {
+        // Call the Stop method in your Go code
+        goCelestia.Stop();
+
+        // Update the connection state
+        isConnected.set(false);
+    }
+
+    onMount(async () => {
+        const go = new Go();
+        const wasmModule = await WebAssembly.instantiateStreaming(fetch('main.wasm'), go.importObject);
+        go.run(wasmModule.instance);
+
+        const celestiaWasmModule = await WebAssembly.instantiateStreaming(fetch('celestia.wasm'), go.importObject);
+        go.run(celestiaWasmModule.instance);
+    });
 </script>
 
 <main>
-	<div class="container mx-auto p-8">
+    <div class="container mx-auto p-8">
         <h1 class="text-3xl font-bold mb-6">Celestia Node Inspector Tool</h1>
 
         <div class="mb-6">
@@ -23,17 +46,20 @@
         </div>
 
         <div class="mb-6">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="connectToNode()">Connect</button>
-            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ml-4 rounded focus:outline-none focus:shadow-outline" onclick="testConnectivity()">Test Connectivity</button>
+            {#if $isConnected}
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+                        onclick="{stopNode}">Stop</button>
+            {:else}
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+                        onclick="{connectToNode}">Connect</button>
+            {/if}
+            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 ml-4 rounded focus:outline-none focus:shadow-outline" 
+                    onclick="testConnectivity()">Test Connectivity</button>
         </div>
 
-		<div class="bg-white shadow-md rounded p-6">
-			<h2 class="text-xl font-bold mb-4">Logs</h2>
-			<pre id="wasm_logs" class="text-sm text-gray-700 overflow-auto" style="height: 300px;"></pre>
-		</div>
+        <div class="bg-white shadow-md rounded p-6">
+            <h2 class="text-xl font-bold mb-4">Logs</h2>
+            <pre id="wasm_logs" class="text-sm text-gray-700 overflow-auto" style="height: 300px;"></pre>
+        </div>
     </div>
 </main>
-
-<style>
-
-</style>
