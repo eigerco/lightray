@@ -1,12 +1,14 @@
 <script>
-    import { onMount } from 'svelte';
-	import { writable } from 'svelte/store';
+    import {onMount} from 'svelte';
+    import {writable} from 'svelte/store';
+    import {DEFAULT_CONFIG} from "./config.js";
 
     let isConnected = writable(false);
+    let config = DEFAULT_CONFIG;
 
-	function appendLog(msg, type = 'info') {
+    function appendLog(msg, type = 'info') {
         let wasmLogs = document.getElementById("wasm_logs");
-        
+
         // Create a span for the prefix (log level)
         let prefix = document.createElement('span');
         let prefixText = type.toUpperCase() + ": ";
@@ -41,9 +43,9 @@
     // Expose appendLog globally
     window.appendLog = appendLog;
 
-     function connectToNode() {
+    function connectToNode() {
         if (window.startNode && typeof window.startNode === 'function') {
-            window.startNode();
+            window.startNode(config);
             isConnected.set(true);
         } else {
             console.error('startNode method not available');
@@ -83,16 +85,20 @@
 
         <div class="mb-6">
             <label for="nodeAddress" class="block text-gray-700 text-sm font-bold mb-2">Node Address:</label>
-            <input type="text" id="nodeAddress" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter node address">
+            <input type="text" id="nodeAddress"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                   placeholder="Enter node address">
         </div>
 
         <div class="mb-6">
             {#if $isConnected}
-                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
-                        on:click="{stopNode}">Stop</button>
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        on:click="{stopNode}">Stop
+                </button>
             {:else}
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
-                        on:click="{connectToNode}">Connect</button>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        on:click="{connectToNode}">Connect
+                </button>
             {/if}
         </div>
 
@@ -100,7 +106,15 @@
             <h2 class="text-xl font-bold mb-4">Logs</h2>
             <pre id="wasm_logs" class="text-sm text-gray-700 overflow-auto" style="height: 300px;"></pre>
         </div>
+
+
+        <div class="bg-white shadow-md rounded p-6 mt-2">
+            <h2 class="text-xl font-bold mb-4">Config</h2>
+            <textarea class="block p-2.5 w-full text-sm rounded-lg border border-gray-300" bind:value={config}/>
+        </div>
+
     </div>
+
 </main>
 
 <style>
