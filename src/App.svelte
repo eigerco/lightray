@@ -4,6 +4,7 @@
     import {DEFAULT_CONFIG} from "./config.js";
 
     let isConnected = writable(false);
+    let isModuleLoaded = writable(false); // State to track if the module is loaded
     let config = DEFAULT_CONFIG;
 
     function appendLog(msg, type = 'info') {
@@ -71,6 +72,7 @@
         try {
             const wasmResponse = await fetch('celestia.wasm');
             celestiaWasmModule = await WebAssembly.instantiateStreaming(wasmResponse, go.importObject);
+            isModuleLoaded.set(true); // Set true when module is loaded
         } catch (err) {
             console.error('Failed to load celestia.wasm:', err);
             return;
@@ -96,9 +98,14 @@
                         on:click="{stopNode}">Stop
                 </button>
             {:else}
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                        on:click="{connectToNode}">Connect
-                </button>
+            <button class:bg-gray-500={(!$isModuleLoaded)} class:hover:bg-gray-700={(!$isModuleLoaded)} class:bg-blue-500={($isModuleLoaded)} class:hover:bg-blue-700={($isModuleLoaded)} class="text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            on:click="{connectToNode}" disabled={!$isModuleLoaded}>
+            {#if $isModuleLoaded}
+                Connect
+            {:else}
+                Loading Module...
+            {/if}
+            </button>
             {/if}
         </div>
 
