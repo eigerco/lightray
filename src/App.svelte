@@ -2,7 +2,7 @@
     import {onMount} from 'svelte';
     import {writable} from 'svelte/store';
     import {DEFAULT_CONFIG} from "./config.js";
-
+    
     let isConnected = writable(false);
     let isModuleLoaded = writable(false); // State to track if the module is loaded
     let config = DEFAULT_CONFIG;
@@ -21,7 +21,7 @@
                 prefix.style.color = 'blue';
                 break;
             case 'debug':
-                prefix.style.color = 'green';
+                prefix.style.color = 'gray';
                 break;
             case 'error':
                 prefix.style.color = 'red';

@@ -3,6 +3,10 @@ build-client:
 	go mod tidy
 	cd go/client && GOOS=js GOARCH=wasm go build -o main.wasm && cp main.wasm ../../public/main.wasm
 
+build-client-standard:
+	go mod tidy
+	cd go/client && goenv exec go build
+
 .PHONY: build-server
 build-server:
 	go mod tidy

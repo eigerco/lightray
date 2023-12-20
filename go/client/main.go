@@ -1,45 +1,59 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
-	"syscall/js"
+	"io"
+	"os"
+	"os/signal"
+	"syscall"
 
-	"github.com/libp2p/go-libp2p"
-	peer "github.com/libp2p/go-libp2p-core/peer"
-	"github.com/libp2p/go-libp2p/core/peerstore"
+	libp2p "github.com/libp2p/go-libp2p"
+	"github.com/libp2p/go-libp2p/core/network"
 )
 
-const chatProtocol = "/chat/1.0.0"
-
 func main() {
-	appendLog := js.Global().Get("appendLog")
-
-	// Define a Go function that uses appendLog
-	log := func(msg string, level string) {
-		appendLog.Invoke(msg, level)
-	}
-
+	// Initialize libp2p host
 	h, err := libp2p.New()
 	if err != nil {
-		log(fmt.Sprintf("Failed to start libp2p: %s", err), "error")
 		panic(err)
 	}
+	defer h.Close()
 
-	peerID := h.ID()
-	log("Starting up webassembly client...", "info")
-	log(fmt.Sprintf("Peer ID: %s", peerID.String()), "info")
+	// Set a stream handler on the host
+	h.SetStreamHandler("/chat/1.0.0", handleStream)
 
-	info, err := peer.AddrInfoFromString("/ip4/94.253.197.203/tcp/47471/p2p/12D3KooWD8f4rGREusTmp3UDPhNGCNMb8EaGfQo6sZ9X8fW98LYc")
-	if err != nil {
-		log(fmt.Sprintf("Failed to get address info: %s", err), "error")
-		panic(err)
+	// Print the host's listening addresses
+	fmt.Println("Listening on:")
+	for _, addr := range h.Addrs() {
+		fmt.Printf("- %s/p2p/%s\n", addr, h.ID())
 	}
 
-	h.Peerstore().AddAddrs(info.ID, info.Addrs, peerstore.PermanentAddrTTL)
+	// Wait for a signal to exit
+	waitExit()
+}
 
-	for _, addr := range info.Addrs {
-		log(fmt.Sprintf("Listener Address: %s/p2p/%s", addr, peer.Encode(h.ID())), "info")
+func handleStream(s network.Stream) {
+	fmt.Println("New stream opened")
+
+	// Create a buffer to read data from the stream
+	reader := bufio.NewReader(s)
+	for {
+		line, err := reader.ReadString('\n')
+		if err != nil {
+			if err != io.EOF {
+				fmt.Println("Error reading from buffer:", err)
+			}
+			break
+		}
+		fmt.Printf("Received message: %s", line)
 	}
+	fmt.Println("Stream closed")
+}
 
-	select {}
+func waitExit() {
+	ch := make(chan os.Signal, 1)
+	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
+	<-ch
+	fmt.Println("Received signal, shutting down...")
 }
