@@ -7,4 +7,5 @@ public/celestia.wasm
 go/server/tmp
 go/client/tmp
 tmp/
+.idea
 go/client/client

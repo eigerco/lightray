@@ -46,7 +46,7 @@
 
     function connectToNode() {
         if (window.startNode && typeof window.startNode === 'function') {
-            window.startNode(config);
+            window.startNode();
             isConnected.set(true);
         } else {
             console.error('startNode method not available');
@@ -59,6 +59,12 @@
             isConnected.set(false);
         } else {
             console.error('stopNode method not available');
+        }
+    }
+
+    function initNode() {
+        if (window.initNode && typeof window.initNode === 'function') {
+            window.initNode(config)
         }
     }
 
@@ -107,6 +113,10 @@
             {/if}
             </button>
             {/if}
+            <button class="font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    on:click="{initNode}" disabled={!$isModuleLoaded}>
+                Init
+            </button>
         </div>
 
         <div class="bg-white shadow-md rounded p-6">
