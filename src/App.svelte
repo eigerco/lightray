@@ -1,11 +1,10 @@
 <script>
     import {onMount} from 'svelte';
     import {writable} from 'svelte/store';
-    import {DEFAULT_CONFIG} from "./config.js";
-    
+
     let isConnected = writable(false);
     let isModuleLoaded = writable(false); // State to track if the module is loaded
-    let config = DEFAULT_CONFIG;
+    let bootstrapAddresses = "";
 
     function appendLog(msg, type = 'info') {
         let wasmLogs = document.getElementById("wasm_logs");
@@ -64,7 +63,7 @@
 
     function initNode() {
         if (window.initNode && typeof window.initNode === 'function') {
-            window.initNode(config)
+            window.initNode(bootstrapAddresses)
         }
     }
 
@@ -126,8 +125,8 @@
 
 
         <div class="bg-white shadow-md rounded p-6 mt-2">
-            <h2 class="text-xl font-bold mb-4">Config</h2>
-            <textarea class="block p-2.5 w-full text-sm rounded-lg border border-gray-300" bind:value={config}/>
+            <h2 class="text-xl font-bold mb-4">Bootstrap Addresses</h2>
+            <textarea class="block p-2.5 w-full text-sm rounded-lg border border-gray-300" rows="10" bind:value={bootstrapAddresses}/>
         </div>
 
     </div>
