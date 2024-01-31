@@ -3,8 +3,10 @@
     import {writable} from 'svelte/store';
 
     let isConnected = writable(false);
+    let isStarted = writable(false);
     let isModuleLoaded = writable(false); // State to track if the module is loaded
     let bootstrapAddresses = "";
+    let peerID = '';
 
     function appendLog(msg, type = 'info') {
         let wasmLogs = document.getElementById("wasm_logs");
@@ -56,6 +58,7 @@
         if (window.stopNode && typeof window.stopNode === 'function') {
             window.stopNode();
             isConnected.set(false);
+            isStarted.set(false);
         } else {
             console.error('stopNode method not available');
         }
@@ -66,6 +69,18 @@
             window.initNode(bootstrapAddresses)
         }
     }
+
+    function startedNode() {
+        isStarted.set(true);
+    }
+    // Expose the startedNode function globally
+    window.startedNode = startedNode;
+
+    // Function to set and display the Peer ID
+    function setPeerID(newPeerID) {
+        peerID = newPeerID;
+    }
+    window.setPeerID = setPeerID;
 
     onMount(async () => {
         if (!window.Go) {
@@ -123,6 +138,33 @@
             <pre id="wasm_logs" class="text-sm text-gray-700 overflow-auto" style="height: 300px;"></pre>
         </div>
 
+        {#if $isStarted}
+        <div class="bg-white shadow-md rounded p-6 mt-2">
+            <h2 class="text-xl font-bold mb-4">Status</h2>
+            <p>
+                PeerId: {peerID}
+            </p>
+            <p>
+                Synchronizing headers: xx
+            </p>
+            <p>
+                Latest block:
+            </p>
+            <p class="ml-4">
+                Height: xx
+            </p>
+            <p class="ml-4">
+                Hash: xx
+            </p>
+            <p>
+                Peers:
+            </p>
+            <ul class="ml-4">
+                <li>xx</li>
+                <!-- Add more <li> elements if there are additional peers in the list -->
+            </ul>
+        </div>
+        {/if}
 
         <div class="bg-white shadow-md rounded p-6 mt-2">
             <h2 class="text-xl font-bold mb-4">Bootstrap Addresses</h2>
