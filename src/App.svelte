@@ -64,12 +64,6 @@
         }
     }
 
-    function initNode() {
-        if (window.initNode && typeof window.initNode === 'function') {
-            window.initNode(bootstrapAddresses)
-        }
-    }
-
     function startedNode() {
         isStarted.set(true);
     }
@@ -127,10 +121,6 @@
             {/if}
             </button>
             {/if}
-            <button class="font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    on:click="{initNode}" disabled={!$isModuleLoaded}>
-                Init
-            </button>
         </div>
 
         <div class="bg-white shadow-md rounded p-6 mt-2">
