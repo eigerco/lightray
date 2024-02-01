@@ -47,7 +47,7 @@
 
     function connectToNode() {
         if (window.startNode && typeof window.startNode === 'function') {
-            window.startNode();
+            window.startNode(bootstrapAddresses);
             isConnected.set(true);
         } else {
             console.error('startNode method not available');
@@ -133,6 +133,11 @@
             </button>
         </div>
 
+        <div class="bg-white shadow-md rounded p-6 mt-2">
+            <h2 class="text-xl font-bold mb-4">Bootstrap Addresses</h2>
+            <textarea class="block p-2.5 w-full text-sm rounded-lg border border-gray-300" rows="10" bind:value={bootstrapAddresses}/>
+        </div>
+
         <div class="bg-white shadow-md rounded p-6">
             <h2 class="text-xl font-bold mb-4">Logs</h2>
             <pre id="wasm_logs" class="text-sm text-gray-700 overflow-auto" style="height: 300px;"></pre>
@@ -166,10 +171,7 @@
         </div>
         {/if}
 
-        <div class="bg-white shadow-md rounded p-6 mt-2">
-            <h2 class="text-xl font-bold mb-4">Bootstrap Addresses</h2>
-            <textarea class="block p-2.5 w-full text-sm rounded-lg border border-gray-300" rows="10" bind:value={bootstrapAddresses}/>
-        </div>
+
 
     </div>
 
