@@ -11,7 +11,7 @@ copy-wasm-exec:
 
 build-celestia-wasm:
 	@echo "Building celestia wasm"
-	cd third_party/celestia-node && goenv exec go mod tidy && GOOS=js GOARCH=wasm goenv exec go build --tags "light notracing" -o ./build/celestia.wasm ./cmd/wasmlight
+	cd third_party/celestia-node && goenv exec go mod tidy && GOOS=js GOARCH=wasm goenv exec go build -ldflags="-s -w" --tags "light notracing" -o ./build/celestia.wasm ./cmd/wasmlight
 	cp third_party/celestia-node/build/celestia.wasm public/celestia.wasm
 
 build: build-client build-server build-celestia-wasm
@@ -27,4 +27,4 @@ dev:
 
 deploy:
 	npm run build
-	sudo cp public/* /var/www/html/
+	sudo cp -r public/* /var/www/html/
