@@ -24,3 +24,7 @@ watch:
 .PHONY: dev
 dev:
 	npx concurrently "make watch"
+
+deploy:
+	npm run build
+	sudo cp public/* /var/www/html/
