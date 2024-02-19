@@ -159,7 +159,7 @@
                         Connect
                     {:else}
                         {#if !$isConnected}
-                            <span style="color: white;">Please compile wasm node. No wasm module discovered.</span>
+                            <span style="color: white;">Please wait while wasm node is downloaded...</span>
                         {/if}
                     {/if}
                 </button>
