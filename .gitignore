@@ -9,3 +9,4 @@ go/client/tmp
 tmp/
 .idea
 go/client/client
+bin/bootstrapper

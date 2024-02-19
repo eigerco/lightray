@@ -47,10 +47,16 @@
 
     function connectToNode() {
         if (window.startNode && typeof window.startNode === 'function') {
-            window.startNode(bootstrapAddresses);
-            isConnected.set(true);
+            const error = window.startNode(bootstrapAddresses);
+            if (error) {
+                console.error('Error starting node:', error);
+                isConnected.set(false); // Update isConnected to false if startNode returns an error
+            } else {
+                isConnected.set(true);
+            }
         } else {
             console.error('startNode method not available');
+            isConnected.set(false); // Update isConnected to false if startNode method is not available
         }
     }
 
@@ -82,12 +88,19 @@
     }
     window.setPeerID = setPeerID;
 
+    function nodeStartFailure() {
+        isConnected.set(false);
+        isStarted.set(false);
+    }
+    window.nodeStartFailure = nodeStartFailure;
+
     onMount(async () => {
         if (!window.Go) {
             console.error('Go wasm_exec.js is not loaded');
             return;
         }
         const go = new window.Go();
+
         let celestiaWasmModule;
         try {
             const wasmResponse = await fetch('celestia.wasm');
@@ -97,13 +110,35 @@
             console.error('Failed to load celestia.wasm:', err);
             return;
         }
+
         go.run(celestiaWasmModule.instance);
+
+        // Fetch bootstrap peers when the page is loaded and fill them into the bootstrapper addresses.
+        try {
+            const response = await fetch('http://localhost:8096/peers');
+            if (response.ok) {
+                const data = await response.json();
+                bootstrapAddresses = Object.values(data.addrs).join('\n');
+            } else {
+                console.error('Failed to fetch peers:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error fetching peers:', error);
+        }
     });
 </script>
 
 <main>
     <div class="container mx-auto p-8">
-        <h1 class="text-3xl font-bold mb-6">Celestia Node Inspector Tool</h1>
+        <h1 class="text-3xl font-bold mb-6">Celestia Wasm Node</h1>
+        <p class="text-lg mb-6">Celestia Wasm Node enables you to:</p>
+        <ul class="list-disc pl-6 mb-6">
+            <li>Start and stop the node</li>
+            <li>Change bootstrap addresses as needed</li>
+            <li>Connect to peers and download headers</li>
+        </ul>
+        <p class="mb-6">To connect to the Celestia network, secure webtransport addresses are required. Please note that the Celestia Wasm Node is compatible only with Google Chrome.</p>
+        <p class="mb-6">For detailed logging information, please refer to the console logs.</p>
 
         <div class="mb-6">
             {#if $isConnected}
@@ -111,29 +146,35 @@
                         on:click="{stopNode}">Stop
                 </button>
             {:else}
-            <button class:bg-gray-500={(!$isModuleLoaded)} class:hover:bg-gray-700={(!$isModuleLoaded)} class:bg-blue-500={($isModuleLoaded)} class:hover:bg-blue-700={($isModuleLoaded)} class="text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            on:click="{connectToNode}" disabled={!$isModuleLoaded}>
-            {#if $isModuleLoaded}
-                Connect
-            {:else}
-                Loading Module...
+                <button
+                        class:bg-gray-500={(!$isModuleLoaded)}
+                        class:hover:bg-gray-700={(!$isModuleLoaded)}
+                        class:bg-blue-500={($isModuleLoaded)}
+                        class:hover:bg-blue-700={($isModuleLoaded)}
+                        class:bg-red-500={(!$isModuleLoaded && !$isConnected)}
+                        class:hover:bg-red-700={(!$isModuleLoaded && !$isConnected)}
+                        class="text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        on:click="{connectToNode}" disabled={!$isModuleLoaded}>
+                    {#if $isModuleLoaded}
+                        Connect
+                    {:else}
+                        {#if !$isConnected}
+                            <span style="color: white;">Please compile wasm node. No wasm module discovered.</span>
+                        {/if}
+                    {/if}
+                </button>
             {/if}
-            </button>
-            {/if}
-            <button class="font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    on:click="{initNode}" disabled={!$isModuleLoaded}>
-                Init
-            </button>
         </div>
 
-        <div class="bg-white shadow-md rounded p-6 mt-2">
+        <div class="bg-white  pt-6 mt-2">
             <h2 class="text-xl font-bold mb-4">Bootstrap Addresses</h2>
             <textarea class="block p-2.5 w-full text-sm rounded-lg border border-gray-300" rows="10" bind:value={bootstrapAddresses}/>
         </div>
 
-        <div class="bg-white shadow-md rounded p-6">
-            <h2 class="text-xl font-bold mb-4">Logs</h2>
-            <pre id="wasm_logs" class="text-sm text-gray-700 overflow-auto" style="height: 300px;"></pre>
+
+        <div class="bg-white pt-6">
+            <h2 class="text-xl font-bold mb-4">Runtime Logs</h2>
+            <pre id="wasm_logs" class="text-sm text-gray-700 overflow-auto" style="height: 300px; white-space: pre-wrap;"></pre>
         </div>
 
         {#if $isStarted}

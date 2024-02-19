@@ -1,20 +1,10 @@
-.PHONY: build-client
-build-client:
-	go mod tidy
-	cd go/client && GOOS=js GOARCH=wasm go build -o main.wasm && cp main.wasm ../../public/main.wasm
+.PHONY: build-bootstrapper
+build-bootstrapper:
+	cd third_party/celestia-node && go build -o ./build/bootstrapper ./cmd/bootstrapper
 
-build-client-standard:
-	go mod tidy
-	cd go/client && goenv exec go build
-
-.PHONY: build-server
-build-server:
-	go mod tidy
-	cd go/server && go build -o ../../bin/server
-
-.PHONY: run-server
-run-server: build-server
-	./bin/server &
+.PHONY: run-bootstrapper
+run-bootstrapper: build-bootstrapper
+	cd third_party/celestia-node && ./build/bootstrapper
 
 copy-wasm-exec:
 	cp /Users/nevio/.goenv/versions/1.21.3/misc/wasm/wasm_exec.js public/wasm_exec.js
