@@ -115,7 +115,7 @@
 
         // Fetch bootstrap peers when the page is loaded and fill them into the bootstrapper addresses.
         try {
-            const response = await fetch('http://localhost:8096/peers');
+            const response = await fetch('http://localhost:8096/bootstrap-peers');
             if (response.ok) {
                 const data = await response.json();
                 bootstrapAddresses = Object.values(data.addrs).join('\n');
