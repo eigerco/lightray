@@ -131,7 +131,7 @@
 <main>
     <div class="container mx-auto p-8">
         <h1 class="text-3xl font-bold mb-6">LightRay - Celestia Wasm Golang Light Node</h1>
-        <p class="text-lg mb-6">LightRay, Celestia Wasm Light Node enables you to:</p>
+        <p class="text-lg mb-6">LightRay enables you to:</p>
         <ul class="list-disc pl-6 mb-6">
             <li>Start and stop the node</li>
             <li>Change bootstrap addresses as needed</li>
