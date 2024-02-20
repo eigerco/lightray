@@ -1,1 +1,2 @@
-# Celestia Go Wasm Playground
+# Lightray - Celestia Wasm Golang Light Node
+
