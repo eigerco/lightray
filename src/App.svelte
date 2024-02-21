@@ -107,6 +107,37 @@
     }
     window.nodeStartFailure = nodeStartFailure;
 
+    function cleanDatabase() {
+        var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+
+        // Open the database
+        var request = indexedDB.open("celestia");
+
+        // Handle success
+        request.onsuccess = function(event) {
+            var db = event.target.result;
+
+            // Close the database connection first
+            db.close();
+
+            // Use the deleteDatabase method
+            var deleteRequest = indexedDB.deleteDatabase("celestia");
+
+            deleteRequest.onsuccess = function(event) {
+                console.log("Database deleted successfully");
+            };
+
+            deleteRequest.onerror = function(event) {
+                console.log("Error deleting database");
+            };
+        };
+
+        // Handle errors
+        request.onerror = function(event) {
+            console.log("Error opening database");
+        };
+    }
+
     onMount(async () => {
         if (!window.Go) {
             console.error('Go wasm_exec.js is not loaded');
@@ -133,7 +164,7 @@
             const response = await fetch('http://localhost:8096/bootstrap-peers');
 
             // Production demo requires following.
-            // const response = await fetch('/bootstrap-peers');
+            //const response = await fetch('/bootstrap-peers');
 
             if (response.ok) {
                 const data = await response.json();
@@ -216,8 +247,7 @@
                     {/if}
                 </button>
             {/if}
-
-            <button on:click="{clearDatabase}" class="text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-700">
+            <button on:click="{clearDatabase}" class="text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline bg-gray-800 hover:bg-gray-700">
                 <span style="color: white;">Clear database</span>
             </button>
         </div>
