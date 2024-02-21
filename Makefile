@@ -20,3 +20,6 @@ build: build-bootstrapper build-celestia-wasm
 deploy:
 	npm run build
 	sudo cp -r public/* /var/www/html/
+
+deploy-bootstrapper: build-bootstrapper
+	cp ./third_party/celestia-node/build/bootstrapper /usr/local/bin/bootstrapper
