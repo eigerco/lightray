@@ -177,42 +177,10 @@
             <textarea class="block p-2.5 w-full text-sm rounded-lg border border-gray-300" rows="10" bind:value={bootstrapAddresses}/>
         </div>
 
-
         <div class="bg-white pt-6">
             <h2 class="text-xl font-bold mb-4">Runtime Logs</h2>
             <pre id="wasm_logs" class="text-sm text-gray-700 overflow-auto" style="height: 300px; white-space: pre-wrap;"></pre>
         </div>
-
-        {#if $isStarted}
-        <div class="bg-white shadow-md rounded p-6 mt-2">
-            <h2 class="text-xl font-bold mb-4">Status</h2>
-            <p>
-                PeerId: {peerID}
-            </p>
-            <p>
-                Synchronizing headers: xx
-            </p>
-            <p>
-                Latest block:
-            </p>
-            <p class="ml-4">
-                Height: xx
-            </p>
-            <p class="ml-4">
-                Hash: xx
-            </p>
-            <p>
-                Peers:
-            </p>
-            <ul class="ml-4">
-                <li>xx</li>
-                <!-- Add more <li> elements if there are additional peers in the list -->
-            </ul>
-        </div>
-        {/if}
-
-
-
     </div>
 
 </main>
