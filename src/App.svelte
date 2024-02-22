@@ -161,10 +161,10 @@
         try {
 
             // Local demo requires following.
-            const response = await fetch('http://localhost:8096/bootstrap-peers');
+           // const response = await fetch('http://localhost:8096/bootstrap-peers');
 
             // Production demo requires following.
-            //const response = await fetch('/bootstrap-peers');
+            const response = await fetch('/bootstrap-peers');
 
             if (response.ok) {
                 const data = await response.json();
