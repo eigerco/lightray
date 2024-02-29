@@ -149,19 +149,18 @@
         try {
             const wasmResponse = await fetch('celestia.wasm');
             celestiaWasmModule = await WebAssembly.instantiateStreaming(wasmResponse, go.importObject);
+            go.run(celestiaWasmModule.instance);
             isModuleLoaded.set(true); // Set true when module is loaded
         } catch (err) {
             console.error('Failed to load celestia.wasm:', err);
             return;
         }
 
-        go.run(celestiaWasmModule.instance);
-
         // Fetch bootstrap peers when the page is loaded and fill them into the bootstrapper addresses.
         try {
 
             // Local demo requires following.
-           // const response = await fetch('http://localhost:8096/bootstrap-peers');
+            //const response = await fetch('http://localhost:8096/bootstrap-peers');
 
             // Production demo requires following.
             const response = await fetch('/bootstrap-peers');
