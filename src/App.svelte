@@ -8,7 +8,10 @@
     let isModuleLoaded = writable(false); // State to track if the module is loaded
     let bootstrapAddresses = "";
     let peerID = '';
+    let networkHead = {};
     let notification = null
+    let connectedPeers = []
+    let syncer = {}
 
     function appendLog(msg, type = 'info') {
         let wasmLogs = document.getElementById("wasm_logs");
@@ -73,6 +76,7 @@
     }
 
     function clearDatabase() {
+        let indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
         let request = indexedDB.deleteDatabase("celestia");
 
         request.onerror = (e) => createNotification("error", "Error deleting database.")
@@ -101,46 +105,29 @@
     }
     window.setPeerID = setPeerID;
 
+    function setNetworkHead(nh) {
+        networkHead = JSON.parse(nh)
+    }
+    window.setNetworkHead = setNetworkHead
     function nodeStartFailure() {
         isConnected.set(false);
         isStarted.set(false);
     }
     window.nodeStartFailure = nodeStartFailure;
 
-    function cleanDatabase() {
-        var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-
-        // Open the database
-        var request = indexedDB.open("celestia");
-
-        // Handle success
-        request.onsuccess = function(event) {
-            var db = event.target.result;
-
-            // Close the database connection first
-            db.close();
-
-            // Use the deleteDatabase method
-            var deleteRequest = indexedDB.deleteDatabase("celestia");
-
-            deleteRequest.onsuccess = function(event) {
-                console.log("Database deleted successfully");
-            };
-
-            deleteRequest.onerror = function(event) {
-                console.log("Error deleting database");
-            };
-        };
-
-        // Handle errors
-        request.onerror = function(event) {
-            console.log("Error opening database");
-        };
+    function setConnectedPeers(peers) {
+        connectedPeers = peers
     }
+    window.setConnectedPeers = setConnectedPeers
+
+    function syncerInfo(si) {
+        syncer = JSON.parse(si)
+    }
+    window.syncerInfo = syncerInfo
 
     onMount(async () => {
         if (!window.Go) {
-            console.error('Go wasm_exec.js is not loaded');
+            console.error('Go wasm_exec.jsnode is not loaded');
             return;
         }
         const go = new window.Go();
@@ -160,7 +147,7 @@
         try {
 
             // Local demo requires following.
-            //const response = await fetch('http://localhost:8096/bootstrap-peers');
+            // const response = await fetch('http://localhost:8096/bootstrap-peers');
 
             // Production demo requires following.
             const response = await fetch('/bootstrap-peers');
@@ -256,6 +243,30 @@
             <textarea class="block p-2.5 w-full text-sm rounded-lg border border-gray-300" rows="10" bind:value={bootstrapAddresses}/>
         </div>
 
+
+        <div class="bg-white pt-6">
+            <h2 class="text-xl font-bold mb-4">Status</h2>
+            <ul>
+                <li><strong>PeerId:</strong> {peerID}</li>
+                <li><strong>Synchronizing headers:</strong> {syncer?.from_height || '0'}/{syncer?.to_height || '0'}</li>
+                <li>
+                    <strong>Latest block:</strong>
+                    <ul>
+                        <li class="ml-5"><strong>Height:</strong> {networkHead?.header?.height || ''}</li>
+                        <li class="ml-5"><strong>Hash:</strong> {networkHead?.commit?.block_id?.hash || ''}</li>
+                        <li class="ml-5"><strong>Data square size:</strong> {networkHead?.dah?.row_roots?.length || ''}x{networkHead?.dah?.column_roots?.length || ''} shares</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Peers:</strong>
+                    <ul>
+                        {#each connectedPeers as peer}
+                        <li class="ml-5">{peer}</li>
+                        {/each}
+                    </ul>
+                </li>
+            </ul>
+        </div>
         <div class="bg-white pt-6">
             <h2 class="text-xl font-bold mb-4">Runtime Logs</h2>
             <pre id="wasm_logs" class="text-sm text-gray-700 overflow-auto" style="height: 300px; white-space: pre-wrap;"></pre>
