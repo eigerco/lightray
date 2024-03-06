@@ -7,11 +7,11 @@
     let isStarted = writable(false);
     let isModuleLoaded = writable(false); // State to track if the module is loaded
     let bootstrapAddresses = "";
-    let peerID = '';
-    let networkHead = {};
+    let peerID = null;
+    let networkHead = null;
     let notification = null
-    let connectedPeers = []
-    let syncer = {}
+    let connectedPeers = null
+    let syncer = null
 
     function appendLog(msg, type = 'info') {
         let wasmLogs = document.getElementById("wasm_logs");
@@ -70,6 +70,11 @@
             window.stopNode();
             isConnected.set(false);
             isStarted.set(false);
+            peerID = null
+            networkHead = null
+            notification = null
+            connectedPeers = null
+            syncer = null
         } else {
             console.error('stopNode method not available');
         }
@@ -166,7 +171,7 @@
 
 <main>
     {#if notification }
-    <div transition:fade={{ delay: 250, duration: 1000 }} class="absolute right-10 top-10 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow-lg" role="alert">
+    <div transition:fade={{ delay: 250, duration: 1000 }} class="fixed right-10 top-10 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow-lg" role="alert">
         {#if notification.type === 'success'}
             <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -233,7 +238,7 @@
                     {/if}
                 </button>
             {/if}
-            <button on:click="{clearDatabase}" class="text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline bg-gray-800 hover:bg-gray-700">
+            <button on:click="{clearDatabase}" disabled={$isConnected} class="text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline bg-gray-800 hover:bg-gray-700 disabled:opacity-25">
                 <span style="color: white;">Clear database</span>
             </button>
         </div>
@@ -244,29 +249,39 @@
         </div>
 
 
-        <div class="bg-white pt-6">
-            <h2 class="text-xl font-bold mb-4">Status</h2>
-            <ul>
-                <li><strong>PeerId:</strong> {peerID}</li>
-                <li><strong>Synchronizing headers:</strong> {syncer?.from_height || '0'}/{syncer?.to_height || '0'}</li>
-                <li>
-                    <strong>Latest block:</strong>
-                    <ul>
-                        <li class="ml-5"><strong>Height:</strong> {networkHead?.header?.height || ''}</li>
-                        <li class="ml-5"><strong>Hash:</strong> {networkHead?.commit?.block_id?.hash || ''}</li>
-                        <li class="ml-5"><strong>Data square size:</strong> {networkHead?.dah?.row_roots?.length || ''}x{networkHead?.dah?.column_roots?.length || ''} shares</li>
-                    </ul>
-                </li>
-                <li>
-                    <strong>Peers:</strong>
-                    <ul>
-                        {#each connectedPeers as peer}
-                        <li class="ml-5">{peer}</li>
-                        {/each}
-                    </ul>
-                </li>
-            </ul>
-        </div>
+        {#if peerID || syncer || networkHead || connectedPeers}
+            <div class="bg-white pt-6">
+                <h2 class="text-xl font-bold mb-4">Status</h2>
+                <ul>
+                    {#if peerID}
+                        <li><strong>PeerId:</strong> {peerID}</li>
+                    {/if}
+                    {#if syncer}
+                        <li><strong>Synchronizing headers:</strong> {syncer.from_height || '0'}/{syncer.to_height || '0'}</li>
+                    {/if}
+                    {#if networkHead}
+                        <li>
+                            <strong>Latest block:</strong>
+                            <ul>
+                                <li class="ml-5"><strong>Height:</strong> {networkHead?.header?.height || ''}</li>
+                                <li class="ml-5"><strong>Hash:</strong> {networkHead?.commit?.block_id?.hash || ''}</li>
+                                <li class="ml-5"><strong>Data square size:</strong> {networkHead?.dah?.row_roots?.length || ''}x{networkHead?.dah?.column_roots?.length || ''} shares</li>
+                            </ul>
+                        </li>
+                    {/if}
+                    {#if connectedPeers}
+                        <li>
+                            <strong>Peers:</strong>
+                            <ul>
+                                {#each connectedPeers as peer}
+                                <li class="ml-5">{peer}</li>
+                                {/each}
+                            </ul>
+                        </li>
+                    {/if}
+                </ul>
+            </div>
+        {/if}
         <div class="bg-white pt-6">
             <h2 class="text-xl font-bold mb-4">Runtime Logs</h2>
             <pre id="wasm_logs" class="text-sm text-gray-700 overflow-auto" style="height: 300px; white-space: pre-wrap;"></pre>
