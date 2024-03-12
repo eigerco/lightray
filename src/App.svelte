@@ -13,6 +13,14 @@
     let connectedPeers = null
     let syncer = null
 
+    window.addEventListener('unhandledrejection', event => {
+        event.preventDefault();
+    });
+
+    window.addEventListener('error', (event) => {
+        console.error('Global error handler:', event.message);
+    });
+
     function appendLog(msg, type = 'info') {
         let wasmLogs = document.getElementById("wasm_logs");
 
@@ -151,11 +159,11 @@
         // Fetch bootstrap peers when the page is loaded and fill them into the bootstrapper addresses.
         try {
 
-            // Local demo requires following.
-            // const response = await fetch('http://localhost:8096/bootstrap-peers');
+            // Local demo requires the following.
+            const response = await fetch('https://lightray.eiger.co/bootstrap-peers');
 
             // Production demo requires following.
-            const response = await fetch('/bootstrap-peers');
+            // const response = await fetch('/bootstrap-peers');
 
             if (response.ok) {
                 const data = await response.json();
