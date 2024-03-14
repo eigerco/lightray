@@ -22,6 +22,7 @@ To get started with a manual installation, follow these steps:
 3. Start the development server: `npm start dev`. After starting the server, you can access the web interface at: http://localhost:8080
 4. To run a Celestia light node locally, refer to the official Celestia documentation. You can find instructions for running a light node [here](https://docs.celestia.org/nodes/light-node) and for running as a Docker image [here](https://docs.celestia.org/nodes/docker-images). For obtaining the authentication token, visit [this page](https://docs.celestia.org/developers/node-tutorial#auth-token).
 5. Start the bootstrapper service by setting the `CELESTIA_NODE_AUTH_TOKEN=<auth_token> CELESTIA_NODE_IP_ADDR=<node_address> make run-bootstrapper` environment variables. The [bootstrapper](#bootstrapper) service is necessary for the operation of the Celestia wasm node.
+6. Navigate back to the development server web interface and start the node!
 
 ## Web
 The web service hosts and instantiates the LightRay node.
