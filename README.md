@@ -32,7 +32,7 @@ It leverages IndexedDB for persistent data storage and key management, ensuring 
 
 The UI offers a minimalistic interface for interacting with the LightRay node. It supports operations such as starting and stopping the node, connecting to the network, and clearing the database cache. Developed using Svelte, the UI features include:
 
-- **Clear Database Button**: This button purges all data within the database. It is enabled only when the node is in the stopped state to prevent data loss during operation.
+- **Clear Database Button**: This button purges all data within the database.
 - **Connect Button**: Initiates the light node and establishes a connection to the network, enabling participation in the network activities.
 - **Stop Button**: Safely stops the node's operation, ensuring a graceful shutdown of activities.
 - **Bootstrap Addresses Text Field**: Allows for manual configuration of bootstrap node addresses, each entered on a new line. Alternatively, the default address provided by the bootstrapper service can be used for convenience. Please note that only secure web transport bootstrappers are supported!
