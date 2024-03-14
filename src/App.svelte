@@ -129,7 +129,7 @@
     window.nodeStartFailure = nodeStartFailure;
 
     function setConnectedPeers(peers) {
-        connectedPeers = peers
+        connectedPeers = peers.sort()
     }
     window.setConnectedPeers = setConnectedPeers
 
