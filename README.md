@@ -1,6 +1,6 @@
 # LightRay: Celestia Light Node for Web Browsers
 
-LightRay represents a pioneering advancement in blockchain technology, introducing a web browser-compatible version of the Celestia light node through WebAssembly. This innovation includes a web service that effortlessly hosts the Celestia node, granting users the convenience of starting and stopping a Celestia light node directly within their browser interface.
+LightRay introduces a significant enhancement within the Celestia ecosystem, enabling a browser-compatible version of the Celestia light node through WebAssembly. This development features a web service that facilitates easy hosting of the Celestia node, providing users with the capability to directly operate a Celestia light node from their web browser interface.
 
 ## Connectivity and Compatibility
 
