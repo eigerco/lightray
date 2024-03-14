@@ -14,12 +14,14 @@ Despite these adjustments, LightRay maintains crucial functionalities such as he
 
 # Installation Instructions
 
+To get started with a manual installation, follow these steps:
+
 ## Manual installation
-1. Clone the repository on your local machine `git clone git@github.com:eigerco/lightray.git` and go to ./lightray dir.
-2. Build the celestia wasm node `make build-celestia-wasm`
-3. Run the npm dev server `npm start dev` now you should be able to access the web server on http://localhost:8080
-4. To run a light celestia node locally follow the official instructions https://docs.celestia.org/nodes/light-node or https://docs.celestia.org/nodes/docker-images if you want to run as a docker image. To get the auth token check this page https://docs.celestia.org/developers/node-tutorial#auth-token.
-5. Run the bootstrapper - `CELESTIA_NODE_AUTH_TOKEN=<auth_token> CELESTIA_NODE_IP_ADDR=<node_address> make run-bootstrapper` - We also need to run another service called [bootstrapper](#bootstrapper) that points to the celestia full node.
+1. Clone the repository to your local machine and navigate to the directory: `git clone git@github.com:eigerco/lightray.git && cd lightray`.
+2. Build the Celestia wasm node: `make build-celestia-wasm`
+3. Start the development server: `npm start dev`. After starting the server, you can access the web interface at: http://localhost:8080
+4. To run a Celestia light node locally, refer to the official Celestia documentation. You can find instructions for running a light node [here](https://docs.celestia.org/nodes/light-node) and for running as a Docker image [here](https://docs.celestia.org/nodes/docker-images). For obtaining the authentication token, visit [this page](https://docs.celestia.org/developers/node-tutorial#auth-token).
+5. Start the bootstrapper service by setting the `CELESTIA_NODE_AUTH_TOKEN=<auth_token> CELESTIA_NODE_IP_ADDR=<node_address> make run-bootstrapper` environment variables. The [bootstrapper](#bootstrapper) service is necessary for the operation of the Celestia wasm node.
 
 ## Web
 The web service hosts and instantiates the LightRay node.
