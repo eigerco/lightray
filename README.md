@@ -44,14 +44,13 @@ The Bootstrapper service operates in conjunction with our web application, featu
 
 
 # Demo
-The LightRay web service can be accessed at https://lightray.eiger.co/.
+Experience the capabilities of the LightRay web service firsthand by visiting [https://lightray.eiger.co/](https://lightray.eiger.co/).
 
 # Contributors
-LightRay was built in collaboration between [Celestia](https://celestia.org/) and [Eiger](https://www.eiger.co/).
+LightRay represents a collaborative effort between [Celestia](https://celestia.org/) and [Eiger](https://www.eiger.co/), uniting to innovate within the web3 space.
 
-[Celestia](https://celestia.org/) - Celestia is a modular data availability network that makes it easy for anyone to securely launch their own blockchain.
-
-[Eiger](https://www.eiger.co/) - Provides high-value add engineering services to accelerate web3 mass adoption.
+- **[Celestia](https://celestia.org/)**: A modular data availability network, Celestia simplifies the process of securely launching independent blockchains.
+- **[Eiger](https://www.eiger.co/)**: Specializing in high-impact engineering services, Eiger is dedicated to accelerating the widespread adoption of web3 technologies.
 
 # LICENSE
-LightRay is released under the Apache 2.0 License. See the [LICENSE](./LICENSE) file for more details.
+LightRay is made available under the Apache 2.0 License, reflecting our commitment to open-source collaboration and innovation. For detailed licensing information, refer to the [LICENSE](./LICENSE) file.
