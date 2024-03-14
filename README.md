@@ -40,10 +40,8 @@ The UI offers a minimalistic interface for interacting with the LightRay node. I
 - **Status Section**: Displays critical node information including the peer ID, synchronization headers, latest block information, and details on connected peers for operational insight.
 
 ## Bootstrapper
-Bootstrapper is a service that runs alongside our web application, 
-it has a `/bootstrap-peers` endpoint that is being called when the web app is 
-loaded and requests the bootstrap node addresses from celestia,
-then the addresses are being passed down to the node when it is started.
+The Bootstrapper service operates in conjunction with our web application, featuring a key endpoint, `/bootstrap-peers`, that interacts seamlessly with the Celestia network. Upon the web application's initialization, this endpoint is invoked to fetch the addresses of bootstrap nodes from Celestia. These addresses are subsequently supplied to the node at the commencement of its operation, facilitating its integration into the network.
+
 
 # Demo
 The LightRay web service can be accessed at https://lightray.eiger.co/.
