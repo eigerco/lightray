@@ -25,8 +25,8 @@ To get started with a manual installation, follow these steps:
 6. Navigate back to the development server web interface and start the node!
 
 ## Web
-The web service hosts and instantiates the LightRay node.
-The data store and keystore are implemented using indexed db for persistence.
+The web service functions as the host and instantiation point for the LightRay node. 
+It leverages IndexedDB for persistent data storage and key management, ensuring durability and security for both the data store and the keystore components.
 
 ### UI
 Is a minimal UI allowing to start a node and connect to the network, stop the node and clear the database cache.
