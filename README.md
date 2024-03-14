@@ -29,14 +29,15 @@ The web service functions as the host and instantiation point for the LightRay n
 It leverages IndexedDB for persistent data storage and key management, ensuring durability and security for both the data store and the keystore components.
 
 ### UI
-Is a minimal UI allowing to start a node and connect to the network, stop the node and clear the database cache.
-The UI is written in svelte.
-- *Clear Database* button - Purges all the data in the database, is active only while the node is in the stopped state
-- *Connect* button - Starts a light node and connect to the network
-- *Stop* button - Stops the node
-- *Bootstrap Addresses* text field - allows to manually configure the bootstrap node addresses, each address should be on a new line. Or use the default address provided by the bootstrapper service. 
-- *Runtime Logs* section - Provide minimal logging output such as Node started, Node stopped etc. For more detailed logging please refer to the console logs.
-- *Status* section - Displays node information such as peer id, sync headers, latest block info and connected peers.
+
+The UI offers a minimalistic interface for interacting with the LightRay node. It supports operations such as starting and stopping the node, connecting to the network, and clearing the database cache. Developed using Svelte, the UI features include:
+
+- **Clear Database Button**: This button purges all data within the database. It is enabled only when the node is in the stopped state to prevent data loss during operation.
+- **Connect Button**: Initiates the light node and establishes a connection to the network, enabling participation in the network activities.
+- **Stop Button**: Safely stops the node's operation, ensuring a graceful shutdown of activities.
+- **Bootstrap Addresses Text Field**: Allows for manual configuration of bootstrap node addresses, each entered on a new line. Alternatively, the default address provided by the bootstrapper service can be used for convenience.
+- **Runtime Logs Section**: Offers a minimalist logging view, presenting essential outputs like "Node started" and "Node stopped." For in-depth logging, users are directed to consult the console logs.
+- **Status Section**: Displays critical node information including the peer ID, synchronization headers, latest block information, and details on connected peers for operational insight.
 
 ## Bootstrapper
 Bootstrapper is a service that runs alongside our web application, 
