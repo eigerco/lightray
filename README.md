@@ -20,8 +20,8 @@ As of now LightRay node has enabled header sync functionality Data availability 
 1. Clone the repository on your local machine `git clone git@github.com:eigerco/lightray.git` and go to ./lightray dir.
 2. Build the celestia wasm node `make build-celestia-wasm`
 3. Run the npm dev server `npm start dev` now you should be able to access the web server on http://localhost:8080
-4. To run a full celestia node locally follow the official instructions https://docs.celestia.org/nodes/full-storage-node or https://docs.celestia.org/nodes/docker-images if you want to run as a docker image. To get the auth token check this page https://docs.celestia.org/developers/node-tutorial#auth-token.
-5. Run the bootstrapper - `CELESTIA_NODE_AUTH_TOKEN=<auth_token> CELESTIA_NODE_IP_ADDR=<node_address> make run-bootstrapper` - We also need to run another service called [bootstrapper](#bootstrapper) that points to the celestia full node.
+4. To run a light celestia node locally follow the official instructions https://docs.celestia.org/nodes/light-node or https://docs.celestia.org/nodes/docker-images if you want to run as a docker image. To get the auth token check this page https://docs.celestia.org/developers/node-tutorial#auth-token.
+5. Run the bootstrapper - `CELESTIA_NODE_AUTH_TOKEN=<auth_token> CELESTIA_NODE_IP_ADDR=<node_address> make run-bootstrapper` - We also need to run another service called [bootstrapper](#bootstrapper) that points to the celestia light node.
 
 ## Web
 The web service hosts and instantiates the LightRay node.
