@@ -1,18 +1,16 @@
-# LightRay
+# LightRay: Celestia Light Node for Web Browsers
 
-LightRay is the celestia light node ported for web browsers using Web Assembly
-It comes with a web service that hosts the Celestia node and enables you to easily start/stop a celestia light node right from the browser
+LightRay represents a pioneering advancement in blockchain technology, introducing a web browser-compatible version of the Celestia light node through WebAssembly. This innovation includes a web service that effortlessly hosts the Celestia node, granting users the convenience of starting and stopping a Celestia light node directly within their browser interface.
 
-To connect to the Celestia network, secure WebTransport addresses are required. Please note that the Celestia Wasm Node is compatible only with Google Chrome.
+## Connectivity and Compatibility
 
-# Node State / Warning  - Here we can write that we enabled up to sampling heads
-Due to limitations coming from running in a browser environment,
-LightRay currently only supports light node and also some functionality mostly that is coming from
-the fact that in browser it is impossible to listen to the incoming connections. 
-So we had to disable: gateway and rpc services as well as admin state and blob.
-Also we disabled metrics and tracing.
+To engage with the Celestia network, users must utilize secure WebTransport addresses. It is important to highlight that the LightRay Wasm Node is specifically designed for Google Chrome compatibility, ensuring a seamless experience for users of this browser.
 
-As of now LightRay node has enabled header sync functionality Data availability sampling (DAS) and Fraud service
+## Node Functionality and Limitations
+
+In adapting to the unique environment of web browsers, LightRay focuses on light node functionalities, acknowledging the inherent limitations of browser-based operations. Notably, the browser context restricts the ability to accept incoming connections, leading to the omission of several services including gateway and RPC functionalities, admin state management, blob services, as well as metrics and tracing capabilities.
+
+Despite these adjustments, LightRay maintains crucial functionalities such as header synchronization, Data Availability Sampling (DAS), and a Fraud detection service, demonstrating its commitment to delivering essential blockchain services within the constraints of a web browser platform.
 
 # Installation Instructions
 
