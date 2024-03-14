@@ -35,12 +35,12 @@ The UI offers a minimalistic interface for interacting with the LightRay node. I
 - **Clear Database Button**: This button purges all data within the database. It is enabled only when the node is in the stopped state to prevent data loss during operation.
 - **Connect Button**: Initiates the light node and establishes a connection to the network, enabling participation in the network activities.
 - **Stop Button**: Safely stops the node's operation, ensuring a graceful shutdown of activities.
-- **Bootstrap Addresses Text Field**: Allows for manual configuration of bootstrap node addresses, each entered on a new line. Alternatively, the default address provided by the bootstrapper service can be used for convenience.
+- **Bootstrap Addresses Text Field**: Allows for manual configuration of bootstrap node addresses, each entered on a new line. Alternatively, the default address provided by the bootstrapper service can be used for convenience. Please note that only secure web transport bootstrappers are supported!
 - **Runtime Logs Section**: Offers a minimalist logging view, presenting essential outputs like "Node started" and "Node stopped." For in-depth logging, users are directed to consult the console logs.
 - **Status Section**: Displays critical node information including the peer ID, synchronization headers, latest block information, and details on connected peers for operational insight.
 
 ## Bootstrapper
-The Bootstrapper service operates in conjunction with our web application, featuring a key endpoint, `/bootstrap-peers`, that interacts seamlessly with the Celestia network. Upon the web application's initialization, this endpoint is invoked to fetch the addresses of bootstrap nodes from Celestia. These addresses are subsequently supplied to the node at the commencement of its operation, facilitating its integration into the network.
+The Bootstrapper service operates in conjunction with our web application, featuring a key endpoint, `/bootstrap-peers`, that interacts seamlessly with the Celestia network. Upon the web application's initialization, this endpoint is invoked to fetch the addresses of bootstrap nodes from Celestia. It is important to note that only secure WebTransport addresses are utilized to ensure the integrity and security of the communication. These secure addresses are subsequently supplied to the node at the commencement of its operation, facilitating its secure integration into the network.
 
 
 # Demo
