@@ -49,7 +49,7 @@ Experience the capabilities of the LightRay web service firsthand by visiting [h
 # Contributors
 LightRay represents a collaborative effort between [Celestia](https://celestia.org/) and [Eiger](https://www.eiger.co/), uniting to innovate within the web3 space.
 
-- **[Celestia](https://celestia.org/)**: A modular data availability network, Celestia simplifies the process of securely launching independent blockchains.
+- **[Celestia](https://celestia.org/)**: A modular data availability (DA) network that securely scales with the number of users, making it easy for anyone to launch their own blockchain.
 - **[Eiger](https://www.eiger.co/)**: Specializing in high-impact engineering services, Eiger is dedicated to accelerating the widespread adoption of web3 technologies.
 
 # LICENSE
