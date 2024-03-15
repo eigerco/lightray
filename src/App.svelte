@@ -265,7 +265,7 @@
                         <li><strong>PeerId:</strong> {peerID}</li>
                     {/if}
                     {#if syncer}
-                        <li><strong>Synchronizing headers:</strong> {syncer.from_height || '0'}/{syncer.to_height || '0'}</li>
+                        <li><strong>Synchronizing headers:</strong> {syncer.height || '0'}/{syncer.to_height || '0'}</li>
                     {/if}
                     {#if networkHead}
                         <li>
