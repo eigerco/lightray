@@ -16,13 +16,15 @@ Despite these adjustments, LightRay maintains crucial functionalities such as he
 
 To get started with a manual installation, follow these steps:
 
-## Manual installation
+## Running Locally with Docker
 1. Clone the repository to your local machine and navigate to the directory: `git clone git@github.com:eigerco/lightray.git && cd lightray`.
-2. Build the Celestia wasm node: `make build-celestia-wasm`
-3. Start the development server: `npm start dev`. After starting the server, you can access the web interface at: http://localhost:8080
-4. To run a Celestia light node locally, refer to the official Celestia documentation. You can find instructions for running a light node [here](https://docs.celestia.org/nodes/light-node) and for running as a Docker image [here](https://docs.celestia.org/nodes/docker-images). For obtaining the authentication token, visit [this page](https://docs.celestia.org/developers/node-tutorial#auth-token).
-5. Start the bootstrapper service by setting the `CELESTIA_NODE_AUTH_TOKEN=<auth_token> CELESTIA_NODE_IP_ADDR=<node_address> make run-bootstrapper` environment variables. The [bootstrapper](#bootstrapper) service is necessary for the operation of the Celestia wasm node.
-6. Navigate back to the development server web interface and start the node!
+2. Move into the docker directory and execute docker-compose to build and start the application: `cd docker && docker-compose -f docker-compose.yaml up --build`
+
+## Running Locally with Bootstrapper Using Docker
+1. Clone the repository to your local machine and navigate to the directory: `git clone git@github.com:eigerco/lightray.git && cd lightray`.
+2. Ensure that your public IP address can accept TCP and UDP connections on port `6060`. This requires port forwarding and creating firewall rules.
+3. Open the `./docker/bootstrapper-config.json` file and replace `<your-public-ip>` with your actual public IP address.
+4. Navigate to the docker directory and run docker-compose, this time utilizing the `docker-compose-with-bootstrapper.yaml` file: `cd docker && docker-compose -f docker-compose-with-bootstrapper.yaml up --build`
 
 ## Web
 The web service functions as the host and instantiation point for the LightRay node. 
