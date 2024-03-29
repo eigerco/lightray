@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  nginx:
+    build:
+      context: ..
+      dockerfile: ./docker/nginx.Dockerfile
+      args:
+        - PUBLIC_BOOTSTRAPER_HOST=https://lightray.eiger.co/
+    ports:
+      - 8080:80

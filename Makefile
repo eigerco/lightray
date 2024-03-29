@@ -4,7 +4,7 @@ build-bootstrapper:
 
 .PHONY: run-bootstrapper
 run-bootstrapper: build-bootstrapper
-	cd third_party/celestia-node && ./build/bootstrapper
+	cd third_party/celestia-node && ./build/bootstrapper --config="../../bootstrapper-config.json"
 
 copy-wasm-exec:
 	cp ~/.goenv/versions/1.21.3/misc/wasm/wasm_exec.js public/wasm_exec.js

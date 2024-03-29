@@ -160,7 +160,8 @@
         try {
 
             // Local demo requires the following.
-            const response = await fetch('https://lightray.eiger.co/bootstrap-peers');
+            const bootstrapperHost = window.env?.PUBLIC_BOOTSTRAPER_HOST || 'https://lightray.eiger.co'
+            const response = await fetch(`${bootstrapperHost}/bootstrap-peers`);
 
             // Production demo requires following.
             // const response = await fetch('/bootstrap-peers');

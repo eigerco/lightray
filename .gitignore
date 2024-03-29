@@ -10,3 +10,4 @@ tmp/
 .idea
 go/client/client
 bin/bootstrapper
+docker/celestia-light/data/*
