@@ -129,7 +129,7 @@
     window.nodeStartFailure = nodeStartFailure;
 
     function setConnectedPeers(peers) {
-        connectedPeers = peers
+        connectedPeers = peers.sort()
     }
     window.setConnectedPeers = setConnectedPeers
 
@@ -160,7 +160,8 @@
         try {
 
             // Local demo requires the following.
-            const response = await fetch('https://lightray.eiger.co/bootstrap-peers');
+            const bootstrapperHost = window.env?.PUBLIC_BOOTSTRAPER_HOST || 'https://lightray.eiger.co'
+            const response = await fetch(`${bootstrapperHost}/bootstrap-peers`);
 
             // Production demo requires following.
             // const response = await fetch('/bootstrap-peers');
@@ -265,7 +266,7 @@
                         <li><strong>PeerId:</strong> {peerID}</li>
                     {/if}
                     {#if syncer}
-                        <li><strong>Synchronizing headers:</strong> {syncer.from_height || '0'}/{syncer.to_height || '0'}</li>
+                        <li><strong>Synchronizing headers:</strong> {syncer.height || '0'}/{syncer.to_height || '0'}</li>
                     {/if}
                     {#if networkHead}
                         <li>

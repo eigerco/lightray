@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  nginx:
+    build:
+      context: ..
+      dockerfile: ./docker/nginx.Dockerfile
+      args:
+        - PUBLIC_BOOTSTRAPER_HOST=http://localhost:8096
+    ports:
+      - 8080:80
+  bootstrapper:
+    build:
+      context: ..
+      dockerfile: ./docker/bootstrapper.Dockerfile
+    volumes:
+      - ./celestia-light:/root/.celestia-light
+      - ./bootstrapper-config.json:/app/bootstrapper-config.json
+    environment:
+      - CELESTIA_NODE_IP_ADDR=http://celestia-node-orig:26658
+    ports:
+      - 8096:8096
+
+  celestia-node-orig:
+    image: ghcr.io/celestiaorg/celestia-node:v0.13.1
+    init: true
+    restart: always
+    environment:
+      - P2P_NETWORK=celestia
+      - NODE_TYPE=light
+    ports:
+      - "6060:2121/tcp"
+      - "6060:2121/udp"
+    volumes:
+      - ./celestia-light:/home/celestia/.celestia-light
+    command: celestia light start --core.ip celestia-consensus.mesa.newmetric.xyz --core.grpc.port 9090 --core.rpc.port 26657 --rpc.addr 0.0.0.0

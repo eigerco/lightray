@@ -1,0 +1,9 @@
+{
+  "custom_ports": {
+    "<your-public-ip>": 6060,
+    "127.0.0.1": 6060
+  },
+  "custom_ips": {
+    "<your-public-ip>": "127.0.0.1"
+  }
+}
